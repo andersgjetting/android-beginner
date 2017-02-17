@@ -1,5 +1,6 @@
 package dk.prosa.android.findplayground;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -12,12 +13,22 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String DATA_CURRENT_FRAGMENT = "DATA_CURRENT_FRAGMENT";
+    private static final int FRAGMENT_WELCOME = 1;
+    private static final int FRAGMENT_PLAYGROUND = 2;
+
     private DrawerLayout mDrawerLayout;
+    private int mCurrentFragment = FRAGMENT_WELCOME;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(savedInstanceState != null){
+            mCurrentFragment = savedInstanceState.getInt(DATA_CURRENT_FRAGMENT, FRAGMENT_WELCOME);
+        }
 
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
@@ -30,9 +41,13 @@ public class MainActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.dataContainer, new WelcomeFragment(), "TAG_FRAGMENT").commit();
+        setupFragment();
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(DATA_CURRENT_FRAGMENT, mCurrentFragment);
     }
 
     @Override
@@ -45,9 +60,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showPlaygroundsFragment(){
+    private void setupFragment(){
+        Fragment newFragment;
+        switch(mCurrentFragment){
+            case FRAGMENT_PLAYGROUND:
+                newFragment = new PlaygroundsFragment();
+                break;
+            default:
+                newFragment = new WelcomeFragment();
+        }
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.dataContainer, new PlaygroundsFragment(), "TAG_FRAGMENT").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+        fragmentManager.beginTransaction().replace(R.id.dataContainer, newFragment, "TAG_FRAGMENT").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+
+
+    }
+
+    private void showPlaygroundsFragment(){
+        mCurrentFragment = FRAGMENT_PLAYGROUND;
+        setupFragment();
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
