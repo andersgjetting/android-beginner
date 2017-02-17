@@ -18,11 +18,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_messages"
+            android:id="@+id/nav_playgrounds"
             android:icon="@drawable/ic_face_black_24dp"
             android:title="@string/app_playgrounds_action" />
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_toilets"
             android:icon="@drawable/ic_wc_black_24dp"
             android:title="@string/app_toilets_action" />
 

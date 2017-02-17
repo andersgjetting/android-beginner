@@ -1,5 +1,7 @@
 package dk.prosa.android.findplayground;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.dataContainer, new WelcomeFragment(), "TAG_FRAGMENT").commit();
+
     }
 
     @Override
@@ -40,11 +45,21 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showPlaygroundsFragment(){
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.dataContainer, new PlaygroundsFragment(), "TAG_FRAGMENT").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+    }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        switch(menuItem.getItemId()){
+                            case R.id.nav_playgrounds:
+                                showPlaygroundsFragment();
+                                break;
+                        }
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         return true;
