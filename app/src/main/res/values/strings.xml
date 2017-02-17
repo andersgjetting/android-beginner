@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Find playground</string>
+    <string name="app_playgrounds_action">Legepladser</string>
+    <string name="app_toilets_action">Toiletter</string>
+
+</resources>
