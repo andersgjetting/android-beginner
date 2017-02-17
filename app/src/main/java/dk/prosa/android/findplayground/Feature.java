@@ -14,9 +14,6 @@ public class Feature<T extends Feature.FeatureProperties> {
     private Geometry geometry;
 
     T properties;
-
-
-
     public static class Geometry{
         private String type;
         private List<Coordinate> coordinates;
