@@ -4,6 +4,6 @@
     <string name="app_playgrounds_action">Legepladser</string>
     <string name="app_toilets_action">Toiletter</string>
     <string name="welcome_title">KK data</string>
-    <string name="welcome_subtitle">Vælg data i menuen</string>
+    <string name="welcome_subtitle">Find data fra Københavns kommune i menuen</string>
 
 </resources>
