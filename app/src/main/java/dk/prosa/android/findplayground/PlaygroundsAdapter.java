@@ -10,15 +10,17 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
+
 /**
  * Created by andersgjetting on 17/02/2017.
  */
 
 public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.ViewHolder>{
 
-    final List<String> originalData;
+    final List<IPlaygroundViewModel> originalData;
 
-    public PlaygroundsAdapter(List<String> originalData) {
+    public PlaygroundsAdapter(List<IPlaygroundViewModel> originalData) {
         this.originalData = originalData;
     }
 
@@ -33,7 +35,11 @@ public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Context context = holder.itemView.getContext();
 
-        holder.name.setText(originalData.get(position));
+        IPlaygroundViewModel playgroundViewModel = originalData.get(position);
+        holder.name.setText(playgroundViewModel.getName());
+        holder.ageGroup.setText(playgroundViewModel.getAgeGroup());
+        holder.distance.setText(playgroundViewModel.getDistance());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,9 +55,13 @@ public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         final TextView name;
+        final TextView ageGroup;
+        final TextView distance;
         public ViewHolder(View itemView) {
             super(itemView);
             name = (TextView)itemView.findViewById(R.id.itemName);
+            ageGroup = (TextView)itemView.findViewById(R.id.itemAge);
+            distance = (TextView)itemView.findViewById(R.id.itemDistance);
         }
     }
 }

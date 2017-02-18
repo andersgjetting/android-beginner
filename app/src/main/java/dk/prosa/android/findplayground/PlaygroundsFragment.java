@@ -8,9 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dk.prosa.android.findplayground.model.IPlaygroundListViewModel;
+import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
 
 /**
  * Created by andersgjetting on 17/02/2017.
@@ -29,16 +33,52 @@ public class PlaygroundsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         final View root = getView();
+
+        final TextView totalCount = (TextView) root.findViewById(R.id.totalCount);
+
+        final IPlaygroundListViewModel playgroundListViewModel = getPlaygroundListViewModel();
+        totalCount.setText(playgroundListViewModel.getTotalCount());
+
         final RecyclerView recyclerView = (RecyclerView)root.findViewById(R.id.playgroundsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new PlaygroundsAdapter(getPlaygrounds()));
+        recyclerView.setAdapter(new PlaygroundsAdapter(playgroundListViewModel.getPlaygroundModels()));
 
     }
 
-    private List<String> getPlaygrounds(){
-        List<String> list = new ArrayList<>();
+    private IPlaygroundListViewModel getPlaygroundListViewModel(){
+        return new IPlaygroundListViewModel() {
+            @Override
+            public String getTotalCount() {
+                return getResources().getString(R.string.playgrounds_total_count_label);
+            }
+
+            @Override
+            public List<IPlaygroundViewModel> getPlaygroundModels() {
+                return getPlaygrounds();
+            }
+        };
+    }
+
+    private List<IPlaygroundViewModel> getPlaygrounds(){
+        List<IPlaygroundViewModel> list = new ArrayList<>();
         for(int i = 0; i < 25; i++){
-            list.add("Playground: " + i);
+            final int count = i;
+            list.add(new IPlaygroundViewModel() {
+                @Override
+                public String getName() {
+                    return "playground: " + count;
+                }
+
+                @Override
+                public String getDistance() {
+                    return "Afstand: " + count;
+                }
+
+                @Override
+                public String getAgeGroup() {
+                    return "Alder: " + count;
+                }
+            });
         }
         return list;
     }
