@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/itemName"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_margin="16dp"
-        />
+    <RelativeLayout
+        style="@style/DefaultMargin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemName"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/itemAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:text="Alders: 0-15"
+            android:layout_below="@+id/itemName"/>
+
+        <TextView
+            android:id="@+id/itemDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:text="Afstand: 15.2 km"
+            android:layout_below="@+id/itemName"
+            android:layout_alignEnd="@+id/itemName"/>
+
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCC"/>
 </LinearLayout>

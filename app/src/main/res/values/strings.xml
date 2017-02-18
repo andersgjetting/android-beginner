@@ -6,4 +6,6 @@
     <string name="welcome_title">KK data</string>
     <string name="welcome_subtitle">Find data fra Københavns kommune i menuen</string>
 
+    <string name="playgrounds_total_count_label">Antal legeplader i alt: 58</string>
+
 </resources>
