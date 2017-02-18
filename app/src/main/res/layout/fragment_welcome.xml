@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
@@ -11,13 +10,14 @@
         android:layout_gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:text="@string/welcome_title"
-        tools:text="@string/welcome_subtitle" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:text="Vælg data i menuen"/>
+        android:text="@string/welcome_subtitle"/>
 
 </LinearLayout>
