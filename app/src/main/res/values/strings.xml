@@ -6,6 +6,10 @@
     <string name="welcome_title">KK data</string>
     <string name="welcome_subtitle">Find data fra Københavns kommune i menuen</string>
 
-    <string name="playgrounds_total_count_label">Antal legeplader i alt: 58</string>
+    <string name="playgrounds_total_count_label">Antal legeplader i alt: %1$d</string>
+
+    <string name="feature_distance_label">Afstand: %1$s</string>
+    <string name="feature_distance_unknown_label">ukendt</string>
+    <string name="feature_age_group_label">Alder: %1$s</string>
 
 </resources>

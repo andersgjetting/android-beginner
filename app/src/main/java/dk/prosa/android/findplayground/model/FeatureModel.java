@@ -8,7 +8,7 @@ import java.util.List;
  * Created by andersgjetting on 16/02/2017.
  */
 
-public class Feature {
+public class FeatureModel {
 
     private String id;
     private String type;
@@ -67,6 +67,13 @@ public class Feature {
 
         public void setCoordinates(List<Coordinate> coordinates) {
             this.coordinates = coordinates;
+        }
+
+        public Coordinate getLocationCoordinates(){
+            if(coordinates != null && coordinates.size() > 0){
+                return coordinates.get(0);
+            }
+            throw new IllegalStateException("Size of coordinates list not valid");
         }
     }
 
