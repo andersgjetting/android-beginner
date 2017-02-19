@@ -1,11 +1,13 @@
 package dk.prosa.android.findplayground.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
  * Created by andersgjetting on 18/02/2017.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureListModel {
     private int totalFeatures;
 

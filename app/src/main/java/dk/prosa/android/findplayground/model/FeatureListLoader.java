@@ -1,41 +1,27 @@
 package dk.prosa.android.findplayground.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 /**
  * Created by andersgjetting on 16/02/2017.
  */
 
-public class FeatureListLoader {
+public class FeatureListLoader extends AsyncTaskLoader<FeatureListModel> {
 
 
-
-    public FeatureListModel getFeatureListModel(){
-        FeatureListModel featureListModel = new FeatureListModel();
-        featureListModel.setTotalFeatures(98);
-        featureListModel.setFeatures(generateFeatureModelList());
-        return featureListModel;
+    public FeatureListLoader(Context context) {
+        super(context);
     }
 
-    private List<FeatureModel> generateFeatureModelList(){
-        List<FeatureModel> list = new ArrayList<>();
-        for(int i = 0; i < 25; i++){
-            final int count = i;
-
-            FeatureModel featureModel = new FeatureModel();
-
-            FeatureModel.FeatureProperties properties = new FeatureModel.FeatureProperties();
-            properties.put("navn", "playground: " + count);
-            properties.put("aldersgruppe", "Alder: " + count);
-
-            featureModel.setProperties(properties);
-
-
-            list.add(featureModel);
+    @Override
+    public FeatureListModel loadInBackground() {
+        try {
+            return HttpNetwork.httpGet("http://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:legeplads&outputFormat=json&SRSNAME=EPSG:4326", FeatureListModel.class);
+        } catch (Exception e) {
+            Log.e("FeatureListLoader", "error loading data", e);
+            return null;
         }
-        return list;
     }
-
-
 }

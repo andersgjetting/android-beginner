@@ -1,10 +1,11 @@
 package dk.prosa.android.findplayground;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 newFragment = new WelcomeFragment();
         }
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.dataContainer, newFragment, "TAG_FRAGMENT").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
 
 

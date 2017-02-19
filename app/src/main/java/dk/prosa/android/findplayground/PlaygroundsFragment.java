@@ -1,9 +1,12 @@
 package dk.prosa.android.findplayground;
 
-import android.app.Fragment;
+
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,10 +28,11 @@ import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
  * Created by andersgjetting on 17/02/2017.
  */
 
-public class PlaygroundsFragment extends Fragment{
+public class PlaygroundsFragment extends Fragment implements LoaderManager.LoaderCallbacks<FeatureListModel>{
 
-    Location mCurrentLocation;
-
+    private Location mCurrentLocation;
+    private RecyclerView mRecyclerView;
+    private TextView mTotalCount;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,22 +44,36 @@ public class PlaygroundsFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
 
         final View root = getView();
+        mTotalCount = (TextView) root.findViewById(R.id.totalCount);
+        mRecyclerView = (RecyclerView)root.findViewById(R.id.playgroundsRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final TextView totalCount = (TextView) root.findViewById(R.id.totalCount);
+        getLoaderManager().initLoader(0, null, this).forceLoad();
+    }
 
-        final IPlaygroundListViewModel playgroundListViewModel = getPlaygroundListViewModel();
-        totalCount.setText(playgroundListViewModel.getTotalCount());
+    private void setupUI(IPlaygroundListViewModel playgroundListViewModel){
+        mTotalCount.setText(playgroundListViewModel.getTotalCount());
+        mRecyclerView.setAdapter(new PlaygroundsAdapter(playgroundListViewModel.getPlaygroundModels()));
+    }
 
-        final RecyclerView recyclerView = (RecyclerView)root.findViewById(R.id.playgroundsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new PlaygroundsAdapter(playgroundListViewModel.getPlaygroundModels()));
+
+    @Override
+    public Loader<FeatureListModel> onCreateLoader(int id, Bundle args) {
+        return new FeatureListLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<FeatureListModel> loader, FeatureListModel data) {
+        setupUI(new PlaygroundListViewModel(data));
+    }
+
+    @Override
+    public void onLoaderReset(Loader<FeatureListModel> loader) {
 
     }
 
-    private IPlaygroundListViewModel getPlaygroundListViewModel(){
-        FeatureListLoader featureListLoader = new FeatureListLoader();
-        return new PlaygroundListViewModel(featureListLoader.getFeatureListModel());
-    }
+
+
 
     class PlaygroundListViewModel implements IPlaygroundListViewModel{
 

@@ -1,5 +1,7 @@
 package dk.prosa.android.findplayground.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
  * Created by andersgjetting on 16/02/2017.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureModel {
 
     private String id;
