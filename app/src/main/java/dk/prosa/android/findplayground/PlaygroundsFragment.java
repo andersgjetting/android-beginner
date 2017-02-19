@@ -1,11 +1,17 @@
 package dk.prosa.android.findplayground;
 
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +34,11 @@ import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
  * Created by andersgjetting on 17/02/2017.
  */
 
-public class PlaygroundsFragment extends Fragment implements LoaderManager.LoaderCallbacks<FeatureListModel>{
+public class PlaygroundsFragment extends Fragment implements LoaderManager.LoaderCallbacks<FeatureListModel>, LocationListener{
 
     private Location mCurrentLocation;
     private RecyclerView mRecyclerView;
+    private PlaygroundsAdapter mPlaygroundsAdapter;
     private TextView mTotalCount;
     @Nullable
     @Override
@@ -51,9 +58,47 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
         getLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        startLocationManager();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopLocationManager();
+
+    }
+
+    private void startLocationManager(){
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if(permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }
+    }
+
+    private void stopLocationManager(){
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if(permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(this);
+        }
+
+
+    }
+
+
+
     private void setupUI(IPlaygroundListViewModel playgroundListViewModel){
         mTotalCount.setText(playgroundListViewModel.getTotalCount());
-        mRecyclerView.setAdapter(new PlaygroundsAdapter(playgroundListViewModel.getPlaygroundModels()));
+        mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(playgroundListViewModel.getPlaygroundModels()));
     }
 
 
@@ -72,7 +117,30 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
 
     }
 
+    //LocationListener start
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        if(mPlaygroundsAdapter != null){
+            mPlaygroundsAdapter.notifyDataSetChanged();
+        }
+    }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+    //LocationListener end
 
 
     class PlaygroundListViewModel implements IPlaygroundListViewModel{
