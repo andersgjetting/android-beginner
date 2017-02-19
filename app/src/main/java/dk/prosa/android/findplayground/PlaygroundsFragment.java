@@ -31,6 +31,10 @@ import dk.prosa.android.findplayground.model.IPlaygroundListViewModel;
 import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
 
 /**
+ *
+ *  test lat lon
+ *  lon: 12.562375
+ *  latitude: 55.679089
  * Created by andersgjetting on 17/02/2017.
  */
 

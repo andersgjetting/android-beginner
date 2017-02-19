@@ -85,14 +85,14 @@ public class FeatureModel {
 
         public double getLatitude(){
             if(size() > 1){
-                return get(0);
+                return get(1);
             }
             throw new IllegalStateException("coodinates not defined");
         }
 
         public double getLongitude(){
             if(size() > 1){
-                return get(1);
+                return get(0);
             }
             throw new IllegalStateException("coodinates not defined");
         }
