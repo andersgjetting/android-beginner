@@ -11,5 +11,6 @@
     <string name="feature_distance_label">Afstand: %1$s</string>
     <string name="feature_distance_unknown_label">ukendt</string>
     <string name="feature_age_group_label">Alder: %1$s</string>
-
+    <string name="details_activity_title">Detaljer</string>
+    
 </resources>

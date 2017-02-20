@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,10 +17,16 @@ import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
 
 public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.ViewHolder>{
 
-    final List<? extends IPlaygroundViewModel> originalData;
+    public interface Callback{
+        void onPlaygroundSelected(int position);
+    }
 
-    public PlaygroundsAdapter(List<? extends IPlaygroundViewModel> originalData) {
+    final List<? extends IPlaygroundViewModel> originalData;
+    final Callback callback;
+
+    public PlaygroundsAdapter(List<? extends IPlaygroundViewModel> originalData, Callback callback) {
         this.originalData = originalData;
+        this.callback = callback;
     }
 
 
@@ -43,7 +48,7 @@ public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "item " + position + " clicked", Toast.LENGTH_SHORT).show();
+                callback.onPlaygroundSelected(position);
             }
         });
     }

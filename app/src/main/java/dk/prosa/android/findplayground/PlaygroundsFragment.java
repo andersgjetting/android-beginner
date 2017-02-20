@@ -42,10 +42,27 @@ import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
 
 public class PlaygroundsFragment extends Fragment implements LoaderManager.LoaderCallbacks<FeatureListModel>, LocationListener{
 
+    interface Callback{
+        void onPlaygroundSelected(FeatureModel featureModel);
+    }
+
     private RecyclerView mRecyclerView;
     private PlaygroundsAdapter mPlaygroundsAdapter;
     private TextView mTotalCount;
     private PlaygroundListViewModel mPlaygroundListViewModel;
+    private Callback mCallback;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(!(context instanceof  Callback)){
+            throw new IllegalStateException("Context must be instance of callback");
+        }
+        mCallback = (Callback)context;
+    }
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,7 +122,12 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
     private void setupUI(PlaygroundListViewModel playgroundListViewModel){
         mPlaygroundListViewModel = playgroundListViewModel;
         mTotalCount.setText(playgroundListViewModel.getTotalCount());
-        mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(mPlaygroundListViewModel.getPlaygroundModels()));
+        mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(mPlaygroundListViewModel.getPlaygroundModels(), new PlaygroundsAdapter.Callback() {
+            @Override
+            public void onPlaygroundSelected(final int position) {
+                mCallback.onPlaygroundSelected(mPlaygroundListViewModel.getPlaygroundModels().get(position).featureModel);
+            }
+        }));
     }
 
 

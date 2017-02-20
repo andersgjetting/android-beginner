@@ -1,18 +1,22 @@
 package dk.prosa.android.findplayground;
 
 
-import android.support.v4.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import dk.prosa.android.findplayground.model.FeatureModel;
+
+public class MainActivity extends AppCompatActivity implements PlaygroundsFragment.Callback{
 
     private static final String DATA_CURRENT_FRAGMENT = "DATA_CURRENT_FRAGMENT";
     private static final int FRAGMENT_WELCOME = 1;
@@ -96,5 +100,13 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    @Override
+    public void onPlaygroundSelected(FeatureModel featureModel) {
+        Toast.makeText(this, "onPlaygroundSelected in activity", Toast.LENGTH_SHORT).show();
+        Intent i = DetailsActivity.getLauncherIntent(this, featureModel);
+
+        startActivity(i);
     }
 }

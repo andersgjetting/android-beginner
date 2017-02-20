@@ -2,6 +2,7 @@ package dk.prosa.android.findplayground.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FeatureModel {
+public class FeatureModel implements Serializable{
 
     private String id;
     private String type;
@@ -52,7 +53,7 @@ public class FeatureModel {
         this.properties = properties;
     }
 
-    public static class Geometry{
+    public static class Geometry implements Serializable{
         private String type;
         private List<Coordinate> coordinates;
 
