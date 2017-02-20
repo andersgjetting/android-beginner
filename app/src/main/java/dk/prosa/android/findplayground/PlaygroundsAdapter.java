@@ -18,9 +18,9 @@ import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
 
 public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.ViewHolder>{
 
-    final List<IPlaygroundViewModel> originalData;
+    final List<? extends IPlaygroundViewModel> originalData;
 
-    public PlaygroundsAdapter(List<IPlaygroundViewModel> originalData) {
+    public PlaygroundsAdapter(List<? extends IPlaygroundViewModel> originalData) {
         this.originalData = originalData;
     }
 

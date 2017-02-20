@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dk.prosa.android.findplayground.model.FeatureListLoader;
@@ -40,10 +42,10 @@ import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
 
 public class PlaygroundsFragment extends Fragment implements LoaderManager.LoaderCallbacks<FeatureListModel>, LocationListener{
 
-    private Location mCurrentLocation;
     private RecyclerView mRecyclerView;
     private PlaygroundsAdapter mPlaygroundsAdapter;
     private TextView mTotalCount;
+    private PlaygroundListViewModel mPlaygroundListViewModel;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,9 +102,10 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
 
 
 
-    private void setupUI(IPlaygroundListViewModel playgroundListViewModel){
+    private void setupUI(PlaygroundListViewModel playgroundListViewModel){
+        mPlaygroundListViewModel = playgroundListViewModel;
         mTotalCount.setText(playgroundListViewModel.getTotalCount());
-        mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(playgroundListViewModel.getPlaygroundModels()));
+        mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(mPlaygroundListViewModel.getPlaygroundModels()));
     }
 
 
@@ -124,8 +127,8 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
     //LocationListener start
     @Override
     public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
         if(mPlaygroundsAdapter != null){
+            mPlaygroundListViewModel.onLocationChanged(location);
             mPlaygroundsAdapter.notifyDataSetChanged();
         }
     }
@@ -150,7 +153,7 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
     class PlaygroundListViewModel implements IPlaygroundListViewModel{
 
         final FeatureListModel featureListModel;
-        final List<IPlaygroundViewModel> playgroundViewModelList;
+        final List<PlaygroundViewModel> playgroundViewModelList;
 
         PlaygroundListViewModel(FeatureListModel featureListModel) {
             this.featureListModel = featureListModel;
@@ -161,20 +164,49 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
 
         }
 
+        public void onLocationChanged(Location newLocation){
+            if(playgroundViewModelList == null){
+                return;
+            }
+
+            for(PlaygroundViewModel playgroundViewModel : playgroundViewModelList){
+                playgroundViewModel.onLocationChanged(newLocation);
+            }
+            Collections.sort(playgroundViewModelList, new Comparator<PlaygroundViewModel>() {
+                @Override
+                public int compare(PlaygroundViewModel o1, PlaygroundViewModel o2) {
+                    if(o1 == null || o2 == null){
+                        return 0;
+                    }
+                    if(o1.distanceInMeters > o2.distanceInMeters){
+                        return 1;
+                    }
+
+                    if(o1.distanceInMeters < o2.distanceInMeters){
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
+        }
+
         @Override
         public String getTotalCount() {
             return getResources().getString(R.string.playgrounds_total_count_label, featureListModel.getTotalFeatures());
         }
 
         @Override
-        public List<IPlaygroundViewModel> getPlaygroundModels() {
+        public List<PlaygroundViewModel> getPlaygroundModels() {
             return playgroundViewModelList;
         }
     }
 
     class PlaygroundViewModel implements IPlaygroundViewModel{
 
+        private final static float DISTANCE_UNDEFINED = -1f;
         final FeatureModel featureModel;
+
+        private float distanceInMeters = DISTANCE_UNDEFINED;
 
         PlaygroundViewModel(FeatureModel featureModel) {
             this.featureModel = featureModel;
@@ -186,24 +218,33 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
             return featureModel.getProperties().getName();
         }
 
-        @Override
-        public String getDistance() {
-            String distance = getResources().getString(R.string.feature_distance_unknown_label);
-            if(mCurrentLocation != null) {
+        public void onLocationChanged(Location newLocation){
+            distanceInMeters = DISTANCE_UNDEFINED;
+            if(newLocation != null) {
 
                 try {
                     FeatureModel.Coordinate locationCoordinate = featureModel.getGeometry().getLocationCoordinates();
                     double latitude = locationCoordinate.getLatitude();
                     double longitude = locationCoordinate.getLongitude();
                     float distanceResult[] = new float[1];
-                    Location.distanceBetween(latitude, longitude, mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), distanceResult);
+                    Location.distanceBetween(latitude, longitude, newLocation.getLatitude(), newLocation.getLongitude(), distanceResult);
 
-                    distance = String.valueOf(distanceResult[0]);
+                    if(distanceResult[0] < 1.f){
+                        distanceInMeters = 0.f;
+                    }else{
+                        distanceInMeters = Math.round(distanceResult[0]) / 1000.f;
+                    }
+
                 }catch(Exception ex){
                     Log.w("PlaygroundsFragment", "No valid coordinates found");
                 }
             }
+        }
 
+
+        @Override
+        public String getDistance() {
+            String distance = (distanceInMeters != DISTANCE_UNDEFINED) ? String.valueOf(distanceInMeters) : getResources().getString(R.string.feature_distance_unknown_label);
             return getResources().getString(R.string.feature_distance_label, distance);
         }
 

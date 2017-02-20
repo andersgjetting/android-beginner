@@ -9,5 +9,5 @@ import java.util.List;
 public interface IPlaygroundListViewModel {
 
     String getTotalCount();
-    List<IPlaygroundViewModel> getPlaygroundModels();
+    List<? extends IPlaygroundViewModel> getPlaygroundModels();
 }
