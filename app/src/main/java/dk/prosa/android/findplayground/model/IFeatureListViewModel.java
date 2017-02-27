@@ -6,8 +6,8 @@ import java.util.List;
  * Created by andersgjetting on 18/02/2017.
  */
 
-public interface IPlaygroundListViewModel {
+public interface IFeatureListViewModel {
 
     String getTotalCount();
-    List<? extends IPlaygroundViewModel> getPlaygroundModels();
+    List<? extends IFeatureViewModel> getFeatureViewModels();
 }

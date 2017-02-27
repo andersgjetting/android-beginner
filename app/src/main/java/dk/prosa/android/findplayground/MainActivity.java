@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements PlaygroundsFragme
     private static final String DATA_CURRENT_FRAGMENT = "DATA_CURRENT_FRAGMENT";
     private static final int FRAGMENT_WELCOME = 1;
     private static final int FRAGMENT_PLAYGROUND = 2;
+    private static final int FRAGMENT_TOILETS = 3;
 
     private DrawerLayout mDrawerLayout;
     private int mCurrentFragment = FRAGMENT_WELCOME;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements PlaygroundsFragme
             case FRAGMENT_PLAYGROUND:
                 newFragment = new PlaygroundsFragment();
                 break;
+            case FRAGMENT_TOILETS:
+                newFragment = new ToiletsFragment();
+                break;
             default:
                 newFragment = new WelcomeFragment();
         }
@@ -85,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements PlaygroundsFragme
         setupFragment();
     }
 
+    private void showToiletsFragment(){
+        mCurrentFragment = FRAGMENT_TOILETS;
+        setupFragment();
+    }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -93,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements PlaygroundsFragme
                         switch(menuItem.getItemId()){
                             case R.id.nav_playgrounds:
                                 showPlaygroundsFragment();
+                                break;
+                            case R.id.nav_toilets:
+                                showToiletsFragment();
                                 break;
                         }
                         menuItem.setChecked(true);

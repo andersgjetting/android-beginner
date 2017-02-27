@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import dk.prosa.android.findplayground.model.IPlaygroundViewModel;
+import dk.prosa.android.findplayground.model.IFeatureViewModel;
 
 /**
  * Created by andersgjetting on 17/02/2017.
@@ -21,10 +21,10 @@ public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.
         void onPlaygroundSelected(int position);
     }
 
-    final List<? extends IPlaygroundViewModel> originalData;
+    final List<? extends IFeatureViewModel> originalData;
     final Callback callback;
 
-    public PlaygroundsAdapter(List<? extends IPlaygroundViewModel> originalData, Callback callback) {
+    public PlaygroundsAdapter(List<? extends IFeatureViewModel> originalData, Callback callback) {
         this.originalData = originalData;
         this.callback = callback;
     }
@@ -40,9 +40,9 @@ public class PlaygroundsAdapter extends RecyclerView.Adapter<PlaygroundsAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Context context = holder.itemView.getContext();
 
-        IPlaygroundViewModel playgroundViewModel = originalData.get(position);
+        IFeatureViewModel playgroundViewModel = originalData.get(position);
         holder.name.setText(playgroundViewModel.getName());
-        holder.ageGroup.setText(playgroundViewModel.getAgeGroup());
+        holder.ageGroup.setText(playgroundViewModel.getSecondaryLabel());
         holder.distance.setText(playgroundViewModel.getDistance());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

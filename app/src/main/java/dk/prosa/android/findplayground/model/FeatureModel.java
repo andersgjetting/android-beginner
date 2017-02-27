@@ -12,13 +12,13 @@ import java.util.List;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FeatureModel implements Serializable{
+public class FeatureModel<T extends FeatureModel.FeatureProperties> implements Serializable{
 
     private String id;
     private String type;
     private Geometry geometry;
 
-    private FeatureProperties properties;
+    private T properties;
 
 
     public String getId() {
@@ -45,11 +45,11 @@ public class FeatureModel implements Serializable{
         this.geometry = geometry;
     }
 
-    public FeatureProperties getProperties() {
+    public T getProperties() {
         return properties;
     }
 
-    public void setProperties(FeatureProperties properties) {
+    public void setProperties(T properties) {
         this.properties = properties;
     }
 
@@ -100,14 +100,14 @@ public class FeatureModel implements Serializable{
 
     }
 
-    public static class FeatureProperties extends HashMap<String, String>{
-        public String getName(){
-            return get("navn");
-        }
+    public static abstract class FeatureProperties extends HashMap<String, String>{
+        public abstract String getSecondaryLabel();
+        //    return get("aldersgruppe");
 
-        public String getAgeGroups(){
-            return get("aldersgruppe");
-        }
+
+        public abstract String getName();
+        //    return get("navn");
+
 
     }
 }

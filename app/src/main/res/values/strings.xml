@@ -12,5 +12,7 @@
     <string name="feature_distance_unknown_label">ukendt</string>
     <string name="feature_age_group_label">Alder: %1$s</string>
     <string name="details_activity_title">Detaljer</string>
+
+    <string name="toilets_seconday_label">Handicap: %1$s</string>
     
 </resources>

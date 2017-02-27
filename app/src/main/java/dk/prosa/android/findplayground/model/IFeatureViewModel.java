@@ -4,8 +4,8 @@ package dk.prosa.android.findplayground.model;
  * Created by andersgjetting on 18/02/2017.
  */
 
-public interface IPlaygroundViewModel {
+public interface IFeatureViewModel {
     String getName();
     String getDistance();
-    String getAgeGroup();
+    String getSecondaryLabel();
 }

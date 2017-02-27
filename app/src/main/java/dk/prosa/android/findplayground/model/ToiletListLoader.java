@@ -8,17 +8,17 @@ import android.util.Log;
  * Created by andersgjetting on 16/02/2017.
  */
 
-public class FeatureListLoader extends AsyncTaskLoader<FeatureListModel> {
+public class ToiletListLoader extends AsyncTaskLoader<ToiletsListModel> {
 
 
-    public FeatureListLoader(Context context) {
+    public ToiletListLoader(Context context) {
         super(context);
     }
 
     @Override
-    public FeatureListModel loadInBackground() {
+    public ToiletsListModel loadInBackground() {
         try {
-            return HttpNetwork.httpGet("http://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:legeplads&outputFormat=json&SRSNAME=EPSG:4326", FeatureListModel.class);
+            return HttpNetwork.httpGet("http://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:toilet&outputFormat=json&SRSNAME=EPSG:4326", ToiletsListModel.class);
         } catch (Exception e) {
             Log.e("FeatureListLoader", "error loading data", e);
             return null;
