@@ -21,4 +21,9 @@ public class ToiletsFragment extends AbstractFeatureFragment<ToiletsListModel> {
     String getSecondaryLabel(String secondaryValue) {
         return getResources().getString(R.string.toilets_seconday_label, secondaryValue);
     }
+
+    @Override
+    String getTotalCountLabel(int count) {
+        return getResources().getString(R.string.toilets_total_count_label, count);
+    }
 }

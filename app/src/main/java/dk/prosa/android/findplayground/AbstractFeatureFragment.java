@@ -192,7 +192,7 @@ public abstract class AbstractFeatureFragment<T extends FeatureListModel> extend
 
         @Override
         public String getTotalCount() {
-            return getResources().getString(R.string.playgrounds_total_count_label, featureListModel.getTotalFeatures());
+            return AbstractFeatureFragment.this.getTotalCountLabel(featureListModel.getTotalFeatures());//getResources().getString(R.string.playgrounds_total_count_label, featureListModel.getTotalFeatures());
         }
 
         @Override
@@ -255,6 +255,7 @@ public abstract class AbstractFeatureFragment<T extends FeatureListModel> extend
     }
 
     abstract String getSecondaryLabel(String secondaryValue);
+    abstract String getTotalCountLabel(int count);
 
     @Override
     public void onLoadFinished(Loader<T> loader, T data) {

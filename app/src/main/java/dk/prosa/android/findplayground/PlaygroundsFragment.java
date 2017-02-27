@@ -30,4 +30,9 @@ public class PlaygroundsFragment extends AbstractFeatureFragment<PlaygroundListM
     String getSecondaryLabel(String secondaryValue) {
         return getResources().getString(R.string.feature_age_group_label, secondaryValue);
     }
+
+    @Override
+    String getTotalCountLabel(int count) {
+        return getResources().getString(R.string.playgrounds_total_count_label, count);
+    }
 }
