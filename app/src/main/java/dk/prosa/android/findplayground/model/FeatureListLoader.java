@@ -18,7 +18,8 @@ public class FeatureListLoader extends AsyncTaskLoader<FeatureListModel> {
     @Override
     public FeatureListModel loadInBackground() {
         try {
-            return HttpNetwork.httpGet("http://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:legeplads&outputFormat=json&SRSNAME=EPSG:4326", FeatureListModel.class);
+            return HttpNetwork.httpGet("http://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:legeplads&outputFormat=json&SRSNAME=EPSG:4326",
+                    FeatureListModel.class);
         } catch (Exception e) {
             Log.e("FeatureListLoader", "error loading data", e);
             return null;

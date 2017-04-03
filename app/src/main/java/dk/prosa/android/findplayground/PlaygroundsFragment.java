@@ -62,6 +62,7 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getLoaderManager().initLoader(0, null, this).forceLoad();
+        Log.d("minlogger", "jeg logger data ud");
     }
 
     @Override
@@ -86,6 +87,9 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
+
+
+
     }
 
     private void stopLocationManager(){
@@ -106,6 +110,11 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
         mPlaygroundListViewModel = playgroundListViewModel;
         mTotalCount.setText(playgroundListViewModel.getTotalCount());
         mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(mPlaygroundListViewModel.getPlaygroundModels()));
+
+        Location location = new Location("my provider");
+        location.setLatitude(55.679089);
+        location.setLongitude(12.562375);
+        onLocationChanged(location);
     }
 
 
