@@ -84,6 +84,12 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
+
+        Location location = new Location("my provider");
+        location.setLatitude(55.679089);
+        location.setLongitude(12.562375);
+        onLocationChanged(location);
+
     }
 
     private void stopLocationManager(){
