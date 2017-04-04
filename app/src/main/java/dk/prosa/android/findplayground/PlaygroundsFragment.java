@@ -109,11 +109,6 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
         mPlaygroundListViewModel = playgroundListViewModel;
         mTotalCount.setText(playgroundListViewModel.getTotalCount());
         mRecyclerView.setAdapter(mPlaygroundsAdapter = new PlaygroundsAdapter(mPlaygroundListViewModel.getPlaygroundModels()));
-
-        Location location = new Location("my provider");
-        location.setLatitude(55.679089);
-        location.setLongitude(12.562375);
-        onLocationChanged(location);
     }
 
 
