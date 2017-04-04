@@ -62,7 +62,6 @@ public class PlaygroundsFragment extends Fragment implements LoaderManager.Loade
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getLoaderManager().initLoader(0, null, this).forceLoad();
-        Log.d("minlogger", "jeg logger data ud");
     }
 
     @Override
